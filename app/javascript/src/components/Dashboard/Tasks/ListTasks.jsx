@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import moment from "moment";
 
-import { Checkbox } from "neetoui";
+import { Checkbox, Badge } from "neetoui";
 
 import editIcon from "images/editIcon";
 import deleteIcon from "images/deleteIcon";
@@ -22,7 +22,6 @@ const ListTasks = ({
   const onMouseLeave = () => {
     setHoveredRow(null);
   };
-
   const actionButton = (id, icon, handleClick) => (
     <div
       className={`mx-1 ${hoveredRow === id ? "opacity-100" : "opacity-0	"}`}
@@ -32,8 +31,20 @@ const ListTasks = ({
     </div>
   );
 
+  const getColor = tag => {
+    if (tag === "Internal") {
+      return "blue";
+    }
+    if (tag === "Bug") {
+      return "red";
+    }
+    if (tag === "workflow") {
+      return "green";
+    }
+  };
+
   return (
-    <div className="w-full px-4">
+    <div className="w-full px-28">
       <table className="nui-table">
         <thead>
           <tr>
@@ -45,7 +56,7 @@ const ListTasks = ({
             </th>
             <th className="text-left text-gray-400">TITLE</th>
             <th className="text-left text-gray-400">DESCRIPTION</th>
-            <th className="text-left text-gray-400">TAGS</th>
+            <th className="text-center text-gray-400">TAGS</th>
             <th className="text-left text-gray-400">CREATED DATE</th>
             <th className="text-center text-gray-400">DUE DATE</th>
             <th></th>
@@ -70,8 +81,16 @@ const ListTasks = ({
                   {task.title}
                 </div>
               </td>
-              <td>{task.description}</td>
-              <td>{task.tag}</td>
+              <td>
+                <div className="w-40 overflow-hidden whitespace-nowrap overflow-ellipsis">
+                  {task.description}
+                </div>
+              </td>
+              <td>
+                <div className="text-center">
+                  <Badge color={getColor(task.tag)}>{task.tag}</Badge>
+                </div>
+              </td>
               <td>{moment(task.createdDate).format("MMM D, YYYY")}</td>
               <td>
                 <div className="text-center">
