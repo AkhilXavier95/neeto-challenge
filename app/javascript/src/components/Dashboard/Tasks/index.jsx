@@ -8,6 +8,7 @@ import EmptyTaskList from "images/EmptyTaskList";
 
 import ListTasks from "./ListTasks";
 import DeleteModal from "./DeleteModal";
+import CreateNewTask from "./CreateNewTask";
 
 const initialTasks = [
   {
@@ -49,7 +50,7 @@ const Tasks = () => {
   const [singleTaskId, setSingleTaskId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
+  const [showNewTaskPane, setShowNewTaskPane] = useState(false);
   const onSelectAll = () => {
     const taskIds = taskList.map(task => task.id);
     const selected = taskIds.length === selectedIds.length ? [] : taskIds;
@@ -96,7 +97,11 @@ const Tasks = () => {
       <PageHeading
         title="Tasks"
         rightButton={() => (
-          <Button onClick={() => {}} label="Add new task" icon="ri-add-line" />
+          <Button
+            onClick={() => setShowNewTaskPane(true)}
+            label="Add new task"
+            icon="ri-add-line"
+          />
         )}
       />
       {taskList.length > 0 ? (
@@ -143,10 +148,13 @@ const Tasks = () => {
           primaryActionLabel="Add new Task"
         />
       )}
-
       {showDeleteModal && (
         <DeleteModal onClose={onClose} handleDelete={handleDelete} />
       )}
+      <CreateNewTask
+        showPane={showNewTaskPane}
+        setShowPane={setShowNewTaskPane}
+      />
     </>
   );
 };
