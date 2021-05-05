@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import moment from "moment";
 
-import { Checkbox, Badge } from "neetoui";
+import { Checkbox, Badge, Tooltip } from "neetoui";
 
 import editIcon from "images/editIcon";
 import deleteIcon from "images/deleteIcon";
+
+import { getColor } from "./helper";
 
 const ListTasks = ({
   taskList,
@@ -22,26 +24,16 @@ const ListTasks = ({
   const onMouseLeave = () => {
     setHoveredRow(null);
   };
-  const actionButton = (id, icon, handleClick) => (
-    <div
-      className={`mx-1 ${hoveredRow === id ? "opacity-100" : "opacity-0	"}`}
-      onClick={handleClick}
-    >
-      <img src={icon} />
-    </div>
+  const actionButton = (id, icon, handleClick, action) => (
+    <Tooltip content={action} position="bottom">
+      <div
+        className={`mx-1 ${hoveredRow === id ? "opacity-100" : "opacity-0	"}`}
+        onClick={handleClick}
+      >
+        <img src={icon} />
+      </div>
+    </Tooltip>
   );
-
-  const getColor = tag => {
-    if (tag === "Internal") {
-      return "blue";
-    }
-    if (tag === "Bug") {
-      return "red";
-    }
-    if (tag === "workflow") {
-      return "green";
-    }
-  };
 
   return (
     <div className="w-full px-28">
@@ -101,9 +93,12 @@ const ListTasks = ({
               </td>
               <td>
                 <div className="flex">
-                  {actionButton(task.id, editIcon, editClickAction)}
-                  {actionButton(task.id, deleteIcon, () =>
-                    deleteClickAction(task.id)
+                  {actionButton(task.id, editIcon, editClickAction, "Edit")}
+                  {actionButton(
+                    task.id,
+                    deleteIcon,
+                    () => deleteClickAction(task.id),
+                    "Delete"
                   )}
                 </div>
               </td>
