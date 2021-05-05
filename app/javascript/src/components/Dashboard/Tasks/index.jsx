@@ -118,7 +118,7 @@ const Tasks = () => {
         rightButton={() => (
           <Button
             onClick={() => setShowNewTaskPane(true)}
-            label="Add new task"
+            label="New task"
             icon="ri-add-line"
           />
         )}
@@ -164,7 +164,7 @@ const Tasks = () => {
           title="Your task list is empty"
           subtitle=""
           primaryAction={() => setShowNewTaskPane(true)}
-          primaryActionLabel="Add new Task"
+          primaryActionLabel="New Task"
         />
       )}
       {showDeleteModal && (
