@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Button, Toastr } from "neetoui";
+import { Button, Toastr, PageLoader } from "neetoui";
 import { PageHeading, SubHeader } from "neetoui/layouts";
 
 import EmptyState from "components/Common/EmptyState";
@@ -9,6 +9,7 @@ import EmptyTaskList from "images/EmptyTaskList";
 import ListTasks from "./ListTasks";
 import DeleteModal from "./DeleteModal";
 import CreateNewTask from "./CreateNewTask";
+import UserDropDown from "./UserDropDown";
 
 const initialTasks = [
   {
@@ -45,12 +46,20 @@ const initialTasks = [
 ];
 
 const Tasks = () => {
+  const [loading, setLoading] = useState(true);
   const [taskList, setTaskList] = useState(initialTasks);
   const [selectedIds, setSelectedIds] = useState([]);
   const [singleTaskId, setSingleTaskId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showNewTaskPane, setShowNewTaskPane] = useState(false);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+  }, []);
+
   const onSelectAll = () => {
     const taskIds = taskList.map(task => task.id);
     const selected = taskIds.length === selectedIds.length ? [] : taskIds;
@@ -113,16 +122,23 @@ const Tasks = () => {
     Toastr.success("The task has been successfully added.");
   };
 
+  if (loading) {
+    return <PageLoader />;
+  }
   return (
     <>
       <PageHeading
         title="Tasks"
         rightButton={() => (
-          <Button
-            onClick={() => setShowNewTaskPane(true)}
-            label="New task"
-            icon="ri-add-line"
-          />
+          <div className="flex">
+            <Button
+              onClick={() => setShowNewTaskPane(true)}
+              label="New task"
+              icon="ri-add-line"
+              className="mr-2"
+            />
+            <UserDropDown />
+          </div>
         )}
       />
       {taskList.length > 0 ? (
