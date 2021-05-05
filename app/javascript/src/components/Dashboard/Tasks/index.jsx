@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button } from "neetoui";
+import { Button, Toastr } from "neetoui";
 import { PageHeading, SubHeader } from "neetoui/layouts";
 
 import EmptyState from "components/Common/EmptyState";
@@ -80,6 +80,7 @@ const Tasks = () => {
     setTaskList(cTaskList);
     setSelectedIds([]);
     onClose();
+    Toastr.success("The task was deleted successfully.");
   };
 
   const onClose = () => {
