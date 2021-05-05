@@ -6,7 +6,14 @@ import { Checkbox, Badge } from "neetoui";
 import editIcon from "images/editIcon";
 import deleteIcon from "images/deleteIcon";
 
-const ListTasks = ({ taskList, selectedIds, onSelectAll, onSelectTask }) => {
+const ListTasks = ({
+  taskList,
+  selectedIds,
+  onSelectAll,
+  onSelectTask,
+  editClickAction,
+  deleteClickAction,
+}) => {
   const [hoveredRow, setHoveredRow] = useState(null);
 
   const onMouseEnter = id => {
@@ -23,8 +30,7 @@ const ListTasks = ({ taskList, selectedIds, onSelectAll, onSelectTask }) => {
       <img src={icon} />
     </div>
   );
-  const editClickAction = () => {};
-  const deleteClickAction = () => {};
+
   const getColor = tag => {
     if (tag === "Internal") {
       return "blue";
@@ -96,7 +102,9 @@ const ListTasks = ({ taskList, selectedIds, onSelectAll, onSelectTask }) => {
               <td>
                 <div className="flex">
                   {actionButton(task.id, editIcon, editClickAction)}
-                  {actionButton(task.id, deleteIcon, deleteClickAction)}
+                  {actionButton(task.id, deleteIcon, () =>
+                    deleteClickAction(task.id)
+                  )}
                 </div>
               </td>
             </tr>

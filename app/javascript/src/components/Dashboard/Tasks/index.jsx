@@ -7,6 +7,7 @@ import EmptyState from "components/Common/EmptyState";
 import EmptyTaskList from "images/EmptyTaskList";
 
 import ListTasks from "./ListTasks";
+import DeleteModal from "./DeleteModal";
 
 const initialTasks = [
   {
@@ -43,9 +44,11 @@ const initialTasks = [
 ];
 
 const Tasks = () => {
-  const [taskList] = useState(initialTasks);
+  const [taskList, setTaskList] = useState(initialTasks);
   const [selectedIds, setSelectedIds] = useState([]);
+  const [singleTaskId, setSingleTaskId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const onSelectAll = () => {
     const taskIds = taskList.map(task => task.id);
@@ -66,6 +69,28 @@ const Tasks = () => {
     }
   };
 
+  const handleDelete = () => {
+    const cTaskList = [...taskList];
+    const deleteTasks = singleTaskId || selectedIds;
+    deleteTasks.forEach(taskId => {
+      const index = cTaskList.map(task => task.id).indexOf(taskId);
+      cTaskList.splice(index, 1);
+    });
+    setTaskList(cTaskList);
+    onClose();
+  };
+
+  const onClose = () => {
+    setShowDeleteModal(false);
+    setSingleTaskId(null);
+  };
+
+  const editClickAction = () => {};
+  const deleteClickAction = id => {
+    setShowDeleteModal(true);
+    setSingleTaskId([id]);
+  };
+
   return (
     <>
       <PageHeading
@@ -83,7 +108,7 @@ const Tasks = () => {
               clear: () => setSearchTerm(""),
             }}
             deleteButtonProps={{
-              onClick: () => {},
+              onClick: () => setShowDeleteModal(true),
               disabled: !selectedIds.length,
             }}
             paginationProps={{
@@ -105,6 +130,8 @@ const Tasks = () => {
             selectedIds={selectedIds}
             onSelectAll={onSelectAll}
             onSelectTask={onSelectTask}
+            editClickAction={editClickAction}
+            deleteClickAction={deleteClickAction}
           />
         </>
       ) : (
@@ -115,6 +142,10 @@ const Tasks = () => {
           primaryAction={() => {}}
           primaryActionLabel="New Task"
         />
+      )}
+
+      {showDeleteModal && (
+        <DeleteModal onClose={onClose} handleDelete={handleDelete} />
       )}
     </>
   );
