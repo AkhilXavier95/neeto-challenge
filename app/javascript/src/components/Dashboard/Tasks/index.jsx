@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-import { Button } from "neetoui";
+import { Button, Toastr } from "neetoui";
 import { PageHeading, SubHeader } from "neetoui/layouts";
 
 import EmptyState from "components/Common/EmptyState";
@@ -109,6 +109,7 @@ const Tasks = () => {
     cTaskList.push(newTask);
     setTaskList(cTaskList);
     setShowNewTaskPane(false);
+    Toastr.success("The task has been successfully added.");
   };
 
   return (
