@@ -8,6 +8,7 @@ import EmptyTaskList from "images/EmptyTaskList";
 
 import ListTasks from "./ListTasks";
 import DeleteModal from "./DeleteModal";
+import CreateNewTask from "./CreateNewTask";
 
 const initialTasks = [
   {
@@ -49,7 +50,7 @@ const Tasks = () => {
   const [singleTaskId, setSingleTaskId] = useState(null);
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-
+  const [showNewTaskPane, setShowNewTaskPane] = useState(false);
   const onSelectAll = () => {
     const taskIds = taskList.map(task => task.id);
     const selected = taskIds.length === selectedIds.length ? [] : taskIds;
@@ -77,6 +78,7 @@ const Tasks = () => {
       cTaskList.splice(index, 1);
     });
     setTaskList(cTaskList);
+    setSelectedIds([]);
     onClose();
   };
 
@@ -91,12 +93,34 @@ const Tasks = () => {
     setSingleTaskId([id]);
   };
 
+  const createNewTask = values => {
+    const { title, description, dueDate, showDueDate, tags } = values;
+    const cTaskList = [...taskList];
+    const newTask = {
+      id: taskList.length + 1,
+      title,
+      description,
+      tag: tags.value,
+      createdDate: new Date(),
+    };
+    if (showDueDate) {
+      newTask.dueDate = new Date(dueDate);
+    }
+    cTaskList.push(newTask);
+    setTaskList(cTaskList);
+    setShowNewTaskPane(false);
+  };
+
   return (
     <>
       <PageHeading
         title="Tasks"
         rightButton={() => (
-          <Button onClick={() => {}} label="New task" icon="ri-add-line" />
+          <Button
+            onClick={() => setShowNewTaskPane(true)}
+            label="New task"
+            icon="ri-add-line"
+          />
         )}
       />
       {taskList.length > 0 ? (
@@ -139,14 +163,18 @@ const Tasks = () => {
           image={EmptyTaskList}
           title="Your task list is empty"
           subtitle=""
-          primaryAction={() => {}}
+          primaryAction={() => setShowNewTaskPane(true)}
           primaryActionLabel="New Task"
         />
       )}
-
       {showDeleteModal && (
         <DeleteModal onClose={onClose} handleDelete={handleDelete} />
       )}
+      <CreateNewTask
+        showPane={showNewTaskPane}
+        setShowPane={setShowNewTaskPane}
+        createNewTask={createNewTask}
+      />
     </>
   );
 };
