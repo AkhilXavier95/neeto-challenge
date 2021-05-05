@@ -78,6 +78,7 @@ const Tasks = () => {
       cTaskList.splice(index, 1);
     });
     setTaskList(cTaskList);
+    setSelectedIds([]);
     onClose();
   };
 
@@ -90,6 +91,24 @@ const Tasks = () => {
   const deleteClickAction = id => {
     setShowDeleteModal(true);
     setSingleTaskId([id]);
+  };
+
+  const createNewTask = values => {
+    const { title, description, dueDate, showDueDate, tags } = values;
+    const cTaskList = [...taskList];
+    const newTask = {
+      id: taskList.length + 1,
+      title,
+      description,
+      tag: tags.value,
+      createdDate: new Date(),
+    };
+    if (showDueDate) {
+      newTask.dueDate = new Date(dueDate);
+    }
+    cTaskList.push(newTask);
+    setTaskList(cTaskList);
+    setShowNewTaskPane(false);
   };
 
   return (
@@ -144,7 +163,7 @@ const Tasks = () => {
           image={EmptyTaskList}
           title="Your task list is empty"
           subtitle=""
-          primaryAction={() => {}}
+          primaryAction={() => setShowNewTaskPane(true)}
           primaryActionLabel="Add new Task"
         />
       )}
@@ -154,6 +173,7 @@ const Tasks = () => {
       <CreateNewTask
         showPane={showNewTaskPane}
         setShowPane={setShowNewTaskPane}
+        createNewTask={createNewTask}
       />
     </>
   );

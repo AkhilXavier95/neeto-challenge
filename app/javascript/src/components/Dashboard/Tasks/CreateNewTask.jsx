@@ -19,9 +19,11 @@ const validationSchema = yup.object({
   }),
 });
 
-const CreateNewTask = ({ showPane, setShowPane }) => {
+const CreateNewTask = ({ showPane, setShowPane, createNewTask }) => {
   const onClose = () => setShowPane(false);
-  const handleSubmit = () => {};
+  const handleSubmit = values => {
+    createNewTask(values);
+  };
   return (
     <Pane title="Create a new Task" isOpen={showPane} onClose={onClose}>
       <div className="px-6">
