@@ -96,7 +96,7 @@ const Tasks = () => {
       <PageHeading
         title="Tasks"
         rightButton={() => (
-          <Button onClick={() => {}} label="Add new task" icon="ri-add-line" />
+          <Button onClick={() => {}} label="New task" icon="ri-add-line" />
         )}
       />
       {taskList.length > 0 ? (
@@ -140,7 +140,7 @@ const Tasks = () => {
           title="Your task list is empty"
           subtitle=""
           primaryAction={() => {}}
-          primaryActionLabel="Add new Task"
+          primaryActionLabel="New Task"
         />
       )}
 
