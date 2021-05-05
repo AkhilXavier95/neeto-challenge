@@ -110,6 +110,7 @@ const Tasks = () => {
     cTaskList.push(newTask);
     setTaskList(cTaskList);
     setShowNewTaskPane(false);
+    Toastr.success("The task has been successfully added.");
   };
 
   return (
